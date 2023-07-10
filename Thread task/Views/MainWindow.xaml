@@ -8,11 +8,15 @@
         Title="MainWindow" Height="450" Width="850" ResizeMode="NoResize">
     <Grid>
         <Canvas>
-            <TextBox KeyDown="OnKeyDownHandler" Text="{Binding Word}" Canvas.Top="20" Canvas.Left="30" Width="180" Height="30" BorderBrush="Black" BorderThickness="3"></TextBox>
+            <TextBox  Text="{Binding Word,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Canvas.Top="20" Canvas.Left="30" Width="180" Height="30" BorderBrush="Black" BorderThickness="3">
+                <TextBox.InputBindings>
+                    <KeyBinding Key="Enter" Command="{Binding EnterCommand}"/>
+                </TextBox.InputBindings>
+            </TextBox>
 
-            <ListBox ItemsSource="{Binding WordItemSource}" Width="180" Height="300" Canvas.Top="90" Canvas.Left="30"  BorderBrush="Black" BorderThickness="3"></ListBox>
+            <ListBox ItemsSource="{Binding WordsListBox}" Width="180" Height="300" Canvas.Top="90" Canvas.Left="30"  BorderBrush="Black" BorderThickness="3"></ListBox>
 
-            <ListBox  Width="540" Canvas.Left="280" Canvas.Top="20" Height="300" BorderBrush="Black" BorderThickness="3" HorizontalAlignment="Center" VerticalAlignment="Center"></ListBox>
+            <ListBox ItemsSource="{Binding WordsMixListBox}"  Width="540" Canvas.Left="280" Canvas.Top="20" Height="300" BorderBrush="Black" BorderThickness="3" HorizontalAlignment="Center" VerticalAlignment="Center"></ListBox>
 
             <Button Background="DeepSkyBlue" BorderThickness="3" BorderBrush="Black" Canvas.Bottom="20" Canvas.Left="280" Width="120" Height="50" Command="{Binding Play}" Content="Play" FontSize="30">
                 <Button.Resources>
