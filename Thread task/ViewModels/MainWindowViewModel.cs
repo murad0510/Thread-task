@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -45,18 +46,9 @@ namespace Thread_task.ViewModels
         public RelayCommand Resume { get; set; }
         public RelayCommand Stop { get; set; }
         Thread thread;
+
         public MainWindowViewModel()
         {
-            //App.Current.Dispatcher.Invoke(() =>
-            //{
-            thread = new Thread(() =>
-            {
-                DispatcherTimer timer = new DispatcherTimer();
-                timer.Interval = TimeSpan.FromSeconds(1);
-                timer.Tick += timer_Tick;
-                timer.Start();
-            });
-            //});
 
             EnterCommand = new RelayCommand((obj) =>
             {
@@ -65,6 +57,19 @@ namespace Thread_task.ViewModels
 
             Play = new RelayCommand((obj) =>
             {
+                App.Current.Dispatcher.Invoke((System.Action)delegate
+                {
+                    thread = new Thread(() =>
+                    {
+                        DispatcherTimer timer = new DispatcherTimer();
+                        timer.Interval = TimeSpan.FromSeconds(1);
+                        timer.Tick += timer_Tick;
+                        timer.Start();
+
+                        MessageBox.Show("S");
+
+                    });
+                });
                 thread.Start();
             });
 
@@ -94,12 +99,16 @@ namespace Thread_task.ViewModels
 
         private void timer_Tick(object sender, EventArgs e)
         {
-            WordsMixListBox.Clear();
-            for (int i = 0; i < WordsListBox.Count; i++)
+            //MessageBox.Show("7");
+            App.Current.Dispatcher.Invoke((Action)delegate
             {
-                var mixword = sha256(WordsListBox[i]);
-                WordsMixListBox.Add(mixword);
-            }
+                WordsMixListBox.Clear();
+                for (int i = 0; i < WordsListBox.Count; i++)
+                {
+                    var mixword = sha256(WordsListBox[i]);
+                    WordsMixListBox.Add(mixword);
+                }
+            });
         }
     }
 }
