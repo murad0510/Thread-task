@@ -18,7 +18,7 @@
 
             <ListBox ItemsSource="{Binding WordsMixListBox}"  Width="540" Canvas.Left="280" Canvas.Top="20" Height="300" BorderBrush="Black" BorderThickness="3" HorizontalAlignment="Center" VerticalAlignment="Center"></ListBox>
 
-            <Button Background="DeepSkyBlue" BorderThickness="3" BorderBrush="Black" Canvas.Bottom="20" Canvas.Left="280" Width="120" Height="50" Command="{Binding Play}" Content="Play" FontSize="30">
+            <Button Background="DeepSkyBlue" BorderThickness="3" BorderBrush="Black" Canvas.Bottom="20" Canvas.Left="280" Width="120" Height="50" Command="{Binding Play}" Content="Play" FontSize="30" HorizontalAlignment="Left" Canvas.Top="364" VerticalAlignment="Center">
                 <Button.Resources>
                     <Style TargetType="Border">
                         <Setter Property="CornerRadius" Value="10"/>
@@ -26,7 +26,7 @@
                 </Button.Resources>
             </Button>
 
-            <Button Background="DeepSkyBlue" BorderThickness="3" BorderBrush="Black" Canvas.Bottom="20" Canvas.Left="420" Width="120" Height="50" Command="{Binding Pause}" Content="Pause" FontSize="30">
+            <Button Background="DeepSkyBlue" BorderThickness="3" BorderBrush="Black" Canvas.Bottom="20" Canvas.Left="490" Width="120" Height="50" Command="{Binding Pause}" Content="Pause" FontSize="30" HorizontalAlignment="Left" Canvas.Top="364" VerticalAlignment="Center">
                 <Button.Resources>
                     <Style TargetType="Border">
                         <Setter Property="CornerRadius" Value="10"/>
@@ -34,7 +34,7 @@
                 </Button.Resources>
             </Button>
 
-            <Button Background="DeepSkyBlue" BorderThickness="3" BorderBrush="Black" Canvas.Bottom="20" Canvas.Left="560" Width="120" Height="50" Command="{Binding Resume}" Content="Resume" FontSize="30">
+            <Button Background="DeepSkyBlue" BorderThickness="3" BorderBrush="Black" Canvas.Bottom="20" Canvas.Left="700" Width="120" Height="50" Command="{Binding Resume}" Content="Resume" FontSize="30" HorizontalAlignment="Left" Canvas.Top="364" VerticalAlignment="Center">
                 <Button.Resources>
                     <Style TargetType="Border">
                         <Setter Property="CornerRadius" Value="10"/>
@@ -42,13 +42,6 @@
                 </Button.Resources>
             </Button>
 
-            <Button Background="DeepSkyBlue" BorderThickness="3" BorderBrush="Black" Canvas.Bottom="20" Canvas.Left="700" Width="120" Height="50" Command="{Binding Stop}" Content="Stop" FontSize="30">
-                <Button.Resources>
-                    <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="10"/>
-                    </Style>
-                </Button.Resources>
-            </Button>
         </Canvas>
     </Grid>
 </Window>

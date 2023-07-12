@@ -27,5 +27,6 @@ namespace Thread_task
             MainWindowViewModel viewModel = new MainWindowViewModel();
             this.DataContext = viewModel;
         }
+
     }
 }

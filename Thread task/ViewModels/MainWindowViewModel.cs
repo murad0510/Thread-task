@@ -39,48 +39,64 @@ namespace Thread_task.ViewModels
             set { wordsMixListBox = value; OnPropertyChanged(); }
         }
 
+        public static bool IsPlay { get; set; }
 
         public RelayCommand EnterCommand { get; set; }
         public RelayCommand Play { get; set; }
         public RelayCommand Pause { get; set; }
         public RelayCommand Resume { get; set; }
-        public RelayCommand Stop { get; set; }
         Thread thread;
 
-        public MainWindowViewModel()
+        public void Load()
         {
-
-            EnterCommand = new RelayCommand((obj) =>
+            App.Current.Dispatcher.Invoke((System.Action)delegate
             {
-                WordsListBox.Add(Word);
-            });
-
-            Play = new RelayCommand((obj) =>
-            {
-                App.Current.Dispatcher.Invoke((System.Action)delegate
+                thread = new Thread(() =>
                 {
-                    thread = new Thread(() =>
+                    for (int i = 0; i < WordsListBox.Count; i++)
                     {
-                        DispatcherTimer timer = new DispatcherTimer();
-                        timer.Interval = TimeSpan.FromSeconds(1);
-                        timer.Tick += timer_Tick;
-                        timer.Start();
-
-                        MessageBox.Show("S");
-
-                    });
+                        Thread.Sleep(500);
+                        timer_Tick(i);
+                    }
                 });
                 thread.Start();
             });
 
-            Pause = new RelayCommand((obj) =>
+        }
+
+        public MainWindowViewModel()
+        {
+            EnterCommand = new RelayCommand((obj) =>
             {
-                thread.Suspend();
+                WordsListBox.Add(Word);
+                if (IsPlay)
+                {
+                    Load();
+                }
             });
 
-            Stop = new RelayCommand((obj) =>
+            Play = new RelayCommand((obj) =>
             {
-                thread.Abort();
+                IsPlay = true;
+
+                Load();
+
+            });
+
+
+            Resume = new RelayCommand((obj) =>
+            {
+                IsPlay = true;
+
+                if (IsPlay)
+                {
+                    Load();
+                }
+            });
+
+            Pause = new RelayCommand((obj) =>
+            {
+                IsPlay = false;
             });
         }
         static string sha256(string randomString)
@@ -88,25 +104,25 @@ namespace Thread_task.ViewModels
             var crypt = new SHA256Managed();
             string hash = String.Empty;
             byte[] crypto = crypt.ComputeHash(Encoding.ASCII.GetBytes(randomString));
-            Random random = new Random();
-            var a = random.Next(1, 10);
             foreach (byte theByte in crypto)
             {
-                hash += theByte.ToString($"x{a}");
+                hash += theByte.ToString($"x2");
             }
             return hash;
         }
 
-        private void timer_Tick(object sender, EventArgs e)
+        private void timer_Tick(int index)
         {
-            //MessageBox.Show("7");
-            App.Current.Dispatcher.Invoke((Action)delegate
+            App.Current.Dispatcher.Invoke((System.Action)delegate
             {
-                WordsMixListBox.Clear();
-                for (int i = 0; i < WordsListBox.Count; i++)
+                try
                 {
-                    var mixword = sha256(WordsListBox[i]);
+                    var mixword = sha256(WordsListBox[index]);
                     WordsMixListBox.Add(mixword);
+                    WordsListBox.Remove(WordsListBox[index]);
+                }
+                catch (Exception)
+                {
                 }
             });
         }
