@@ -139,7 +139,6 @@ namespace Thread_task.ViewModels
                         var mixword = sha256(WordsListBox[index]);
                         WordsMixListBox.Add(mixword);
                         WordsListBox.Remove(WordsListBox[index]);
-                        //Thread.Sleep(1000);
 
                     }
                     catch (Exception)
