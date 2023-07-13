@@ -41,6 +41,9 @@ namespace Thread_task.ViewModels
 
         public static bool IsPlay { get; set; }
 
+        public static bool IsResume { get; set; }
+
+
         public RelayCommand EnterCommand { get; set; }
         public RelayCommand Play { get; set; }
         public RelayCommand Pause { get; set; }
@@ -53,15 +56,18 @@ namespace Thread_task.ViewModels
             {
                 thread = new Thread(() =>
                 {
-                    for (int i = 0; i < WordsListBox.Count; i++)
+                    int maxIndex = WordsListBox.Count - 1;
+                    for (int i = maxIndex; i >= 0; i--)
                     {
-                        Thread.Sleep(500);
-                        timer_Tick(i);
+                        if (IsPlay)
+                        {
+                            Thread.Sleep(1000);
+                            timer_Tick(i);
+                        }
                     }
                 });
                 thread.Start();
             });
-
         }
 
         public MainWindowViewModel()
@@ -77,26 +83,37 @@ namespace Thread_task.ViewModels
 
             Play = new RelayCommand((obj) =>
             {
-                IsPlay = true;
-
-                Load();
-
+                if (!IsResume)
+                {
+                    IsPlay = true;
+                    IsResume = true;
+                    Load();
+                }
+                else
+                {
+                    MessageBox.Show("You pressed the play button without it", "Notification", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
             });
 
 
             Resume = new RelayCommand((obj) =>
             {
-                IsPlay = true;
-
-                if (IsPlay)
+                if (IsResume)
                 {
-                    Load();
+                    IsPlay = true;
+
+                    if (IsPlay)
+                    {
+                        Load();
+                    }
                 }
             });
 
             Pause = new RelayCommand((obj) =>
             {
+
                 IsPlay = false;
+
             });
         }
         static string sha256(string randomString)
@@ -113,18 +130,23 @@ namespace Thread_task.ViewModels
 
         private void timer_Tick(int index)
         {
-            App.Current.Dispatcher.Invoke((System.Action)delegate
+            if (IsPlay)
             {
-                try
+                App.Current.Dispatcher.Invoke((System.Action)delegate
                 {
-                    var mixword = sha256(WordsListBox[index]);
-                    WordsMixListBox.Add(mixword);
-                    WordsListBox.Remove(WordsListBox[index]);
-                }
-                catch (Exception)
-                {
-                }
-            });
+                    try
+                    {
+                        var mixword = sha256(WordsListBox[index]);
+                        WordsMixListBox.Add(mixword);
+                        WordsListBox.Remove(WordsListBox[index]);
+                        //Thread.Sleep(1000);
+
+                    }
+                    catch (Exception)
+                    {
+                    }
+                });
+            }
         }
     }
 }
